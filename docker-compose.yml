@@ -1,0 +1,49 @@
+version: "3.5"
+
+services:
+
+  nginx:
+    image: nginx:latest
+    ports:
+    - 127.0.0.1:80:80
+    volumes:
+    - ./app:/var/www/html
+    - ./configs/nginx:/etc/nginx/conf.d
+    - ./logs/nginx:/var/log/nginx
+
+  php-fpm:
+    build:
+      context: php-fpm
+    ports:
+    - 127.0.0.1:9000:9000
+    volumes:
+    - ./app:/var/www/html
+
+  php:
+    build:
+      context: php
+    ports:
+    - 127.0.0.1:81:80
+    volumes:
+    - ./app:/var/www/html
+
+  mardiadb:
+    image: mariadb:10.4
+    ports:
+    - 127.0.0.1:3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: rootroot
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: test_user
+      MYSQL_PASSWORD: test_pass
+    volumes:
+    - ./databases/mariadb:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+    - 127.0.0.1:8080:8080
+    environment:
+      PMA_HOST: mardiadb
+      PMA_USER: test_user
+      PMA_PASSWORD: test_pass
