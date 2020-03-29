@@ -1,4 +1,4 @@
-FROM php:7.3-fpm-alpine3.10
+FROM php:7.4-fpm-alpine
 
 # Install tools required for build stage
 RUN apk add --update --no-cache \
@@ -16,21 +16,15 @@ RUN docker-php-ext-install bcmath pdo_mysql
 
 # Install libraries for compiling GD, then build it
 RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev \
- && docker-php-ext-configure gd \
-        --with-gd \
-        --with-freetype-dir=/usr/include/ \
-        --with-png-dir=/usr/include/ \
-        --with-jpeg-dir=/usr/include/ && \
-    NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) && \
-    docker-php-ext-install -j${NPROC} gd && \
-    apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev
+ && docker-php-ext-install gd \
+ && apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev
 
 # Add ZIP archives support
 RUN apk add --update --no-cache zlib-dev libzip-dev \
  && docker-php-ext-install zip
 
 # Install xdebug
-RUN pecl install xdebug-2.7.2 \
+RUN pecl install xdebug \
  && docker-php-ext-enable xdebug
 
 # Enable XDebug
