@@ -30,7 +30,7 @@ To your path with sources, eg `- ../my-sources-in-parent-folder:/var/www/html`.
 
 If you don't like `/var/www/html` path, you may create your own config of
 apache and bind it into `php` or if you use fpm based container, then write
-config for NGINX and bind it to `php-fpm` and `nginx` containers.
+config for NGINX and bind it `nginx` container.
 
 ## Links
 
