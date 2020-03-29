@@ -1,9 +1,9 @@
-FROM php:7.3-apache
+FROM php:7.4-apache
 
 RUN apt-get update
 
 # Install tools required for build stage
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -yq \
+RUN apt-get install -fyqq \
     bash curl wget rsync ca-certificates openssl ssh git tzdata openntpd \
     libxrender1 fontconfig libc6 \
     mariadb-client gnupg binutils-gold autoconf \
@@ -17,23 +17,17 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin -
 RUN docker-php-ext-install bcmath pdo_mysql
 
 # Install libraries for compiling GD, then build it
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -yq \
-    libfreetype6-dev libpng-dev libjpeg-dev libpng-dev libjpeg-turbo-progs \
- && docker-php-ext-configure gd \
-        --with-gd \
-        --with-freetype-dir=/usr/include/ \
-        --with-png-dir=/usr/include/ \
-        --with-jpeg-dir=/usr/include/ \
- && NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
- && docker-php-ext-install -j${NPROC} gd
+RUN apt-get install -fyqq libfreetype6 libfreetype6-dev libpng16-16 libpng-dev libjpeg62-turbo libjpeg62-turbo-dev \
+ && docker-php-ext-install gd \
+ && apt-get remove -fyqq libfreetype6-dev libpng-dev libjpeg62-turbo-dev
 
 # Add ZIP archives support
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -yq \
-    zlib1g-dev libzip-dev \
- && docker-php-ext-install zip
+RUN apt-get install -fyqq zip libzip-dev \
+ && docker-php-ext-install zip \
+ && apt-get remove -fyqq libzip-dev
 
 # Install xdebug
-RUN pecl install xdebug-2.7.2 \
+RUN pecl install xdebug \
  && docker-php-ext-enable xdebug
 
 # Enable XDebug
