@@ -14,8 +14,6 @@ services:
   php-fpm:
     build:
       context: php-fpm
-    ports:
-    - 127.0.0.1:9000:9000
     volumes:
     - ./app:/var/www/html
 
