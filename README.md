@@ -34,6 +34,8 @@ config for NGINX and bind it `nginx` container.
 
 ## Links
 
-* [Video on YouTube](https://www.youtube.com/watch?v=qxGlQZIbpHM) about this
+* [Video on YouTube](https://www.youtube.com/watch?v=he-Rps8VcFk) about this
 composition (on Russian language)
+* [Video on YouTube](https://www.youtube.com/watch?v=qxGlQZIbpHM) about minimal
+version of PHP-FPM and xDebug (on Russian language)
 * [WIKI page](https://en.wikipedia.org/wiki/LAMP_software_bundle) about LAMP
